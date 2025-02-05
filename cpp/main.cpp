@@ -1,38 +1,40 @@
 #include <iostream>
 #include <thread>
+#include <chrono>
 
-static bool s_True = false;
-
-namespace jomkowi {
-    void omke()
-    {
-        std::cout << "omke gams\n";
-    }
-}
-
-void DoWork()
+struct Timer
 {
-    using namespace std::literals::chrono_literals;
+    std::chrono::time_point<std::chrono::steady_clock> start, end;
+    std::chrono::duration<float> duration;
 
-    std::cout << "Start id thread = " << std::this_thread::get_id() << '\n';
-
-    while(!s_True)
+    Timer()
     {
-        std::cout << "work...\n";
-        std::this_thread::sleep_for(1s);
+        start = std::chrono::high_resolution_clock::now();
+    }
+
+    ~Timer()
+    {
+        end = std::chrono::high_resolution_clock::now();
+        duration = end - start;
+        
+        float ms = duration.count()* 1000.0f;
+        std::cout << "duration" << ms << "ms\n";
+    }
+};
+
+void functions()
+{
+    Timer timer;
+
+    for (int i = 0; i < 100; i++)
+    {
+        std::cout << "hello world\n";
     }
 }
 
 int main()
 {
-    std::thread worker(DoWork);
-
-    std::cin.get();
-    s_True = true;
-
-    worker.join();
-    jomkowi::omke();
-    std::cout << "Start id thread = " << std::this_thread::get_id() << '\n';
+    functions();
 
     std::cin.get();
     return 0;
