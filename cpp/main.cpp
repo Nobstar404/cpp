@@ -1,21 +1,38 @@
 #include <iostream>
-#include <vector>
-#include <functional>
+#include <thread>
 
-void ForEach(const std::vector<int>& values, std::function<void(int)>& func)
+static bool s_True = false;
+
+namespace jomkowi {
+    void omke()
+    {
+        std::cout << "omke gams\n";
+    }
+}
+
+void DoWork()
 {
-    for (int value : values)
-        func(value);
+    using namespace std::literals::chrono_literals;
+
+    std::cout << "Start id thread = " << std::this_thread::get_id() << '\n';
+
+    while(!s_True)
+    {
+        std::cout << "work...\n";
+        std::this_thread::sleep_for(1s);
+    }
 }
 
 int main()
 {
-    std::vector<int> values = { 2,3,1,4,6 };
+    std::thread worker(DoWork);
 
-    int a = 5;
+    std::cin.get();
+    s_True = true;
 
-    auto lambda = [=](int value) { std::cout << "Value: " << a << '\n'; };
-    ForEach(values, lambda);
+    worker.join();
+    jomkowi::omke();
+    std::cout << "Start id thread = " << std::this_thread::get_id() << '\n';
 
     std::cin.get();
     return 0;
