@@ -1,40 +1,28 @@
 #include <iostream>
-#include <thread>
-#include <chrono>
-
-struct Timer
-{
-    std::chrono::time_point<std::chrono::steady_clock> start, end;
-    std::chrono::duration<float> duration;
-
-    Timer()
-    {
-        start = std::chrono::high_resolution_clock::now();
-    }
-
-    ~Timer()
-    {
-        end = std::chrono::high_resolution_clock::now();
-        duration = end - start;
-        
-        float ms = duration.count()* 1000.0f;
-        std::cout << "duration" << ms << "ms\n";
-    }
-};
-
-void functions()
-{
-    Timer timer;
-
-    for (int i = 0; i < 100; i++)
-    {
-        std::cout << "hello world\n";
-    }
-}
 
 int main()
 {
-    functions();
+    //int** a2d = new int*[5];
+    //for (int x = 0; x < 5; x++)
+    //{
+    //    for (int y = 0; y < 5; y++)
+    //    {
+    //        a2d[x][y] = 2;
+    //    }
+    //}
+
+    int* array = new int[5 * 5]; //lebih cepat dari pad yang di atas
+    for (int x = 0; x < 5; x++)
+    {
+        for (int y = 0; y < 5; y++)
+        {
+            array[x + y * 5] = 2;
+        }
+    }
+
+    //for (int i = 0; i < 5; i++)
+    //    delete[] a2d[i];
+    delete[] array;
 
     std::cin.get();
     return 0;
