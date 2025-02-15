@@ -1,28 +1,26 @@
 #include <iostream>
+#include <vector>
+#include <algorithm>
+#include <functional>
 
 int main()
 {
-    //int** a2d = new int*[5];
-    //for (int x = 0; x < 5; x++)
-    //{
-    //    for (int y = 0; y < 5; y++)
-    //    {
-    //        a2d[x][y] = 2;
-    //    }
-    //}
-
-    int* array = new int[5 * 5]; //lebih cepat dari pad yang di atas
-    for (int x = 0; x < 5; x++)
-    {
-        for (int y = 0; y < 5; y++)
+    std::vector<int> vec = { 1,2,4,6,3,8,7,5 };
+    std::sort(vec.begin(), vec.end(), [](int a, int b)
         {
-            array[x + y * 5] = 2;
-        }
-    }
+            if (a == 1) {
+                return false;
+            }
+            if (b == 1) {
+                return true;
+            }
+            return a < b;
+        });
 
-    //for (int i = 0; i < 5; i++)
-    //    delete[] a2d[i];
-    delete[] array;
+    for (int value : vec)
+    {
+        std::cout << value << '\n';
+    }
 
     std::cin.get();
     return 0;
