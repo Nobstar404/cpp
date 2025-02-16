@@ -1,23 +1,39 @@
 #include <iostream>
 
-struct Entity
+struct Vector2
 {
-    int x, y;
-
-    int* Getpotsition()
-    {
-        return &x;
-    }
+    float x, y;
 };
+
+struct Vector4
+{
+    union
+    {
+        struct
+        {
+            float x, y, z, w;
+        };
+        struct
+        {
+            Vector2 a, b;
+        };
+    };
+};
+
+void PrintVector2(const Vector2& vector)
+{
+    std::cout << vector.x << ", " << vector.y << '\n';
+}
 
 int main()
 {
-    Entity e = { 5, 8 };
-
-    int* x = e.Getpotsition();
-    int* y = (int*)((char*)&e + 4);
-
-    std::cout << *y << '\n';
+    Vector4 vector = { 1.0f, 2.0f, 3.0f, 4.0f };
+    PrintVector2(vector.a);
+    PrintVector2(vector.b);
+    vector.z = 500.0f;
+    std::cout << "-------------\n";
+    PrintVector2(vector.a);
+    PrintVector2(vector.b);
 
     std::cin.get();
     return 0;
