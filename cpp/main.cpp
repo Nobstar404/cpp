@@ -1,39 +1,52 @@
 #include <iostream>
 
-struct Vector2
+class empty
 {
-    float x, y;
+public:
+    virtual std::string GetClassName() = 0;
 };
 
-struct Vector4
+class Entity : public empty
 {
-    union
-    {
-        struct
-        {
-            float x, y, z, w;
-        };
-        struct
-        {
-            Vector2 a, b;
-        };
-    };
+public:
+    virtual std::string GetName() { return "Entity\n"; };
+    virtual std::string GetClassName() { return "Entity\n"; };
 };
 
-void PrintVector2(const Vector2& vector)
+class Player : public Entity
 {
-    std::cout << vector.x << ", " << vector.y << '\n';
+private:
+    std::string m_Name;
+public:
+    Player (const std::string& name)
+        : m_Name(name) {}
+
+    std::string GetName() override { return m_Name; };
+    virtual std::string GetClassName() { return m_Name; };
+};
+
+void PrintGetName(Entity* entity)
+{
+    std::cout << entity->GetName();
+}
+
+void Print(empty* empty)
+{
+    std::cout << empty->GetClassName();
 }
 
 int main()
 {
-    Vector4 vector = { 1.0f, 2.0f, 3.0f, 4.0f };
-    PrintVector2(vector.a);
-    PrintVector2(vector.b);
-    vector.z = 500.0f;
-    std::cout << "-------------\n";
-    PrintVector2(vector.a);
-    PrintVector2(vector.b);
+    //Entity* e = new Entity();
+    //PrintGetName(e);
+    //Print(e);
+    //Player* p = new Player("jokwi");
+    //PrintGetName(p);
+    //Print(p);
+    Entity e;
+    Print(&e);
+    Player p("jokwi\n");
+    Print(&p);
 
     std::cin.get();
     return 0;
