@@ -1,52 +1,36 @@
 #include <iostream>
 
-class empty
+class Base
 {
 public:
-    virtual std::string GetClassName() = 0;
+    Base() { std::cout << "create Base constructor\n"; }
+    virtual ~Base() { std::cout << "create Base destructor\n"; }
 };
 
-class Entity : public empty
+class Kid : public Base
 {
 public:
-    virtual std::string GetName() { return "Entity\n"; };
-    virtual std::string GetClassName() { return "Entity\n"; };
-};
-
-class Player : public Entity
-{
+    Kid() { m_Array = new int[9]; std::cout << "create Kid constructor\n"; }
+    ~Kid() { delete[] m_Array; std::cout << "create Kid desctructor\n"; }
 private:
-    std::string m_Name;
-public:
-    Player (const std::string& name)
-        : m_Name(name) {}
-
-    std::string GetName() override { return m_Name; };
-    virtual std::string GetClassName() { return m_Name; };
+    int* m_Array;
 };
 
-void PrintGetName(Entity* entity)
-{
-    std::cout << entity->GetName();
-}
-
-void Print(empty* empty)
-{
-    std::cout << empty->GetClassName();
-}
+//void PrintClass(Base* b)
+//{
+//    std::cout << b;
+//}
 
 int main()
 {
-    //Entity* e = new Entity();
-    //PrintGetName(e);
-    //Print(e);
-    //Player* p = new Player("jokwi");
-    //PrintGetName(p);
-    //Print(p);
-    Entity e;
-    Print(&e);
-    Player p("jokwi\n");
-    Print(&p);
+    Base* b = new Base();
+    delete b;
+    std::cout << "-----------------\n";
+    Kid* k = new Kid();
+    delete k;
+    std::cout << "-----------------\n";
+    Base* p = new Kid();
+    delete p;
 
     std::cin.get();
     return 0;
