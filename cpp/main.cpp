@@ -1,34 +1,32 @@
 #include "pch.h"
 
-std::optional<std::string> ReadFile(const std::string& filepath)
+class Entity
 {
-    std::ifstream stream(filepath);
-    if (stream)
+private:
+    std::string m_Name;
+    Entity* m_Parent;
+public:
+    const std::string& GetName() const { return m_Name; }
+    void PrintEntity()
     {
-        std::string result;
-        //read file
-        stream.close();
-        return result;
+        std::cout << "Print Entity\n";
     }
-    return {};
-}
+};
+
+struct EntityData
+{
+    std::string NameData;
+    EntityData* m_Parent;
+};
+
+const std::string& Print_Entity(EntityData* name) { return name->NameData; }
 
 int main()
 {
-    std::optional<std::string> data = ReadFile("data.txt");
-
-    std::string value = data.value_or("Not present\n");
-    std::cout << value;
-
-    if (data)
-    {
-        std::cout << "read file succes\n";
-    }
-    else
-    {
-        std::cout << "read file do not succes\n";
-    }
-
+    Entity* e = nullptr;
+    e->PrintEntity();
+    std::cout << e->GetName();
+    
     std::cin.get();
     return 0;
 }
