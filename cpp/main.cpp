@@ -1,32 +1,46 @@
 #include "pch.h"
 
-class Entity
-{
-private:
-    std::string m_Name;
-    Entity* m_Parent;
-public:
-    const std::string& GetName() const { return m_Name; }
-    void PrintEntity()
-    {
-        std::cout << "Print Entity\n";
-    }
-};
+static uint32_t s_AllocCount = 0;
 
-struct EntityData
+void* operator new(size_t size)
 {
-    std::string NameData;
-    EntityData* m_Parent;
-};
+    s_AllocCount++;
+    std::cout << "Alocating: " << size << " bytes\n";
+    return malloc(size);
+}
 
-const std::string& Print_Entity(EntityData* name) { return name->NameData; }
+#define STRING_VIEW 1;
+#if STRING_VIEW
+void PrintName(std::string_view name)
+{
+    std::cout << name;
+}
+#else
+void PrintName(const std::string& name)
+{
+    std::cout << name;
+}
+#endif
 
 int main()
 {
-    Entity* e = nullptr;
-    e->PrintEntity();
-    std::cout << e->GetName();
-    
+    //const char* name = "jokwi\n";
+    std::string name = "jokwi\n";
+
+#define STRING_VIEW 1;
+#if STRING_VIEW
+    std::string_view firstName(name.c_str(), 2);
+    std::string_view lastName(name.c_str() +4, 6);
+#else
+    std::string firstName = name.substr(0, 2);
+    std::string lastName = name.substr(3, 6);
+#endif
+
+    PrintName("WIWIWI");
+    PrintName(firstName);
+    PrintName(lastName);
+
+    std::cout << s_AllocCount << " Allocations\n";
     std::cin.get();
     return 0;
 }
