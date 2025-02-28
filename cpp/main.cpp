@@ -1,46 +1,31 @@
 #include "pch.h"
 
-static uint32_t s_AllocCount = 0;
+class Random
+{
+public:
+    static Random& Get()
+    {
+        static Random s_Instance;
+        return s_Instance;
+    }
 
-void* operator new(size_t size)
-{
-    s_AllocCount++;
-    std::cout << "Alocating: " << size << " bytes\n";
-    return malloc(size);
-}
+    static float Float() { return Get().IFloat(); }
+private:
+    float IFloat() { return s_Random; }
+    Random() {}
 
-#define STRING_VIEW 1;
-#if STRING_VIEW
-void PrintName(std::string_view name)
-{
-    std::cout << name;
-}
-#else
-void PrintName(const std::string& name)
-{
-    std::cout << name;
-}
-#endif
+    float s_Random = 0.7;
+
+    static Random s_Instance;
+};
 
 int main()
 {
-    //const char* name = "jokwi\n";
-    std::string name = "jokwi\n";
+    float a = Random::Float();
 
-#define STRING_VIEW 1;
-#if STRING_VIEW
-    std::string_view firstName(name.c_str(), 2);
-    std::string_view lastName(name.c_str() +4, 6);
-#else
-    std::string firstName = name.substr(0, 2);
-    std::string lastName = name.substr(3, 6);
-#endif
+    std::cout << a << '\n';
+    Random::Get();
 
-    PrintName("WIWIWI");
-    PrintName(firstName);
-    PrintName(lastName);
-
-    std::cout << s_AllocCount << " Allocations\n";
     std::cin.get();
     return 0;
 }
