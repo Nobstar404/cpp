@@ -1,30 +1,49 @@
 #include "pch.h"
 
-class Random
+struct AllocationMetrics
 {
-public:
-    static Random& Get()
-    {
-        static Random s_Instance;
-        return s_Instance;
-    }
+    uint32_t TotalAllocated = 0;
+    uint32_t TotalFree = 0;
 
-    static float Float() { return Get().IFloat(); }
-private:
-    float IFloat() { return s_Random; }
-    Random() {}
-
-    float s_Random = 0.7;
-
-    static Random s_Instance;
+    uint32_t CurentUsage() { return TotalAllocated - TotalFree; }
 };
+
+AllocationMetrics s_AllocationMetrics;
+
+void* operator new(size_t size)
+{
+    s_AllocationMetrics.TotalAllocated += size;
+
+    return malloc(size);
+}
+
+void operator delete(void* memory, size_t size)
+{
+    s_AllocationMetrics.TotalFree += size;
+
+    free(memory);
+}
+
+class Object
+{
+    float x, y, z;
+};
+
+static void PrintMemoryUsage()
+{
+    std::cout << "Memory Usage: " << s_AllocationMetrics.CurentUsage() << "bytes\n";
+}
 
 int main()
 {
-    float a = Random::Float();
-
-    std::cout << a << '\n';
-    Random::Get();
+    PrintMemoryUsage();
+    std::string name = "jokwdok\n";
+    PrintMemoryUsage();
+    {
+        std::unique_ptr<Object> obj = std::make_unique<Object>();
+        PrintMemoryUsage();
+    }
+    PrintMemoryUsage();
 
     std::cin.get();
     return 0;
