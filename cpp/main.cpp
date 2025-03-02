@@ -29,21 +29,23 @@ static void PrintMemoryUsage()
     std::cout << "Memory Usage: " << s_AllocationMetrics.CurentUsage() << "bytes\n";
 }
 
-void Print(const std::string_view& name)
+void Print(const std::string& name)
 {
-    std::cout << name;
+    std::cout << "[lvalue] " << name;
 }
 
-void Print(std::string_view&& name)
+// INI AKAN TETAP DIPILIH JIKA ADA
+// JIKA TADAK ADA MAKA AKAN KE FUNCTION ATAS
+void Print(std::string&& name)
 {
-    std::cout << name;
+    std::cout << "[rvalue] " << name;
 }
 
 int main()
 {
     {
         PrintMemoryUsage();
-        const char* firstName = "joko ";
+        std::string firstName = "joko ";
         PrintMemoryUsage();
         std::string lastName = "dodol\n";
         PrintMemoryUsage();
