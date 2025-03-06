@@ -7,7 +7,7 @@ public:
 
     Strings(const char* string)
     {
-        printf("Created\n");
+        printf("Created\n"); 
         m_Size = strlen(string);
         m_Data = new char[m_Size];
         memcpy(m_Data, string, m_Size);
@@ -15,12 +15,10 @@ public:
 
     Strings(const Strings& other)
     {
-        printf("copy!\n");
+        printf("Copy\n");
         m_Size = other.m_Size;
-        m_Data = other.m_Data;
-
-        m_Size = 0;
-        m_Data = nullptr;
+        m_Data = new char[m_Size];
+        memcpy(m_Data, other.m_Data, m_Size);
     }
 
     Strings(Strings&& other) noexcept
@@ -29,8 +27,8 @@ public:
         m_Size = other.m_Size;
         m_Data = other.m_Data;
 
-        m_Size = 0;
-        m_Data = nullptr;
+        other.m_Size = 0;
+        other.m_Data = nullptr;
     }
 
     ~Strings()
