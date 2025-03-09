@@ -31,7 +31,7 @@ public:
         other.m_Data = nullptr;
     }
 
-    Strings& operator=(Strings&& other) noexcept
+    Strings& operator+(Strings&& other) noexcept
     {
         printf("Moved!\n");
 
@@ -103,7 +103,7 @@ int main()
     std::cout << "dest: ";
     dest.Print();
 
-    dest = std::move(apple);
+    dest + std::move(apple);
 
     std::cout << "apple: ";
     apple.Print();
