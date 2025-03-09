@@ -31,6 +31,24 @@ public:
         other.m_Data = nullptr;
     }
 
+    Strings& operator=(Strings&& other) noexcept
+    {
+        printf("Moved!\n");
+
+        if (this != &other)
+        {
+            delete[] m_Data;
+
+            m_Size = other.m_Size;
+            m_Data = other.m_Data;
+
+            other.m_Size = 0;
+            other.m_Data = nullptr;
+        }
+
+        return *this;
+    }
+
     ~Strings()
     {
         printf("Delete\n");
@@ -60,7 +78,7 @@ public:
     }
 
     Entity(Strings&& name)
-        : m_Name((Strings&&)name)
+        : m_Name(std::move(name))
     {
     }
 
@@ -74,9 +92,24 @@ private:
 
 int main()
 {
-    Entity e("jokowi\n");
-    e.PrintName();
+    //Entity e("jokowi\n");
+    //e.PrintName();
 
+    Strings apple = "apple";
+    Strings dest;
+
+    std::cout << "apple: ";
+    apple.Print();
+    std::cout << "dest: ";
+    dest.Print();
+
+    dest = std::move(apple);
+
+    std::cout << "apple: ";
+    apple.Print();
+    std::cout << "dest: ";
+    dest.Print();
+    
     std::cin.get();
     return 0;
 }
