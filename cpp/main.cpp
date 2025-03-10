@@ -1,115 +1,35 @@
 #include "pch.h"
 
-class Strings
+template<typename T,size_t S>
+class Array
 {
 public:
-    Strings() = default;
+    constexpr size_t size() const { return S; };
 
-    Strings(const char* string)
-    {
-        printf("Created\n"); 
-        m_Size = strlen(string);
-        m_Data = new char[m_Size];
-        memcpy(m_Data, string, m_Size);
-    }
+    T& operator[](size_t index) { return m_Arr[index]; };
+    const T& operator[](size_t index) const { return m_Arr[index]; };
 
-    Strings(const Strings& other)
-    {
-        printf("Copy\n");
-        m_Size = other.m_Size;
-        m_Data = new char[m_Size];
-        memcpy(m_Data, other.m_Data, m_Size);
-    }
-
-    Strings(Strings&& other) noexcept
-    {
-        printf("Moved!\n");
-        m_Size = other.m_Size;
-        m_Data = other.m_Data;
-
-        other.m_Size = 0;
-        other.m_Data = nullptr;
-    }
-
-    Strings& operator+(Strings&& other) noexcept
-    {
-        printf("Moved!\n");
-
-        if (this != &other)
-        {
-            delete[] m_Data;
-
-            m_Size = other.m_Size;
-            m_Data = other.m_Data;
-
-            other.m_Size = 0;
-            other.m_Data = nullptr;
-        }
-
-        return *this;
-    }
-
-    ~Strings()
-    {
-        printf("Delete\n");
-        delete m_Data;
-    }
-
-    void Print()
-    {
-        for (uint32_t i = 0; i < m_Size; i++)
-        {
-            printf("%C", m_Data[i]);
-        }
-        printf("\n");
-    }
-
+    T* Data() { return m_Arr; }
+    const T* Data() const { return m_Arr; }
 private:
-    char* m_Data;
-    size_t m_Size;
-};
-
-class Entity
-{
-public:
-    Entity(const Strings& name)
-        : m_Name(name)
-    {
-    }
-
-    Entity(Strings&& name)
-        : m_Name(std::move(name))
-    {
-    }
-
-    void PrintName()
-    {
-        m_Name.Print();
-    }
-private:
-    Strings m_Name;
+    T m_Arr[S];
 };
 
 int main()
 {
-    //Entity e("jokowi\n");
-    //e.PrintName();
+    Array<int, 5> a;
+    Array<const char*, 2> chr;
 
-    Strings apple = "apple";
-    Strings dest;
+    chr[0] = "jokowi ";
+    chr[1] = "dodol ";
 
-    std::cout << "apple: ";
-    apple.Print();
-    std::cout << "dest: ";
-    dest.Print();
+    memset(&a[0], 0, a.size() * sizeof(int));
 
-    dest + std::move(apple);
+    for (size_t i = 0; i < chr.size(); i++)
+    {
+        std::cout << chr[i] << '\n';
+    }
 
-    std::cout << "apple: ";
-    apple.Print();
-    std::cout << "dest: ";
-    dest.Print();
-    
     std::cin.get();
     return 0;
 }
