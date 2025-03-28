@@ -26,5 +26,11 @@
     <ClInclude Include="pch.h">
       <Filter>Source Files</Filter>
     </ClInclude>
+    <ClInclude Include="Array.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
+    <ClInclude Include="Vector.h">
+      <Filter>Source Files</Filter>
+    </ClInclude>
   </ItemGroup>
 </Project>

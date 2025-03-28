@@ -12,9 +12,7 @@
 #include <utility>
 
 //data structures
-#include <vector>
 #include <string>
-#include <array>
 #include <set>
 #include <map>
 #include <stack>
@@ -24,3 +22,7 @@
 
 //windows API
 #include <windows.h>
+
+// user
+#include "Array.h"
+#include "Vector.h"
