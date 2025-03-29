@@ -10,6 +10,7 @@
 #include <memory>
 #include <optional>
 #include <utility>
+#include <vector>
 
 //data structures
 #include <string>
@@ -25,4 +26,4 @@
 
 // user
 #include "Array.h"
-#include "Vector.h"
+//include "Vector.h"
