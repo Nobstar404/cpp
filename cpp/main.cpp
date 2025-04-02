@@ -2,6 +2,7 @@
 
 int main()
 {
+#if 0
     std::vector<int> a = { 1,3,4,4,5,6 };
 
     for (int i : a)
@@ -24,7 +25,6 @@ int main()
         auto& value = it->second;
 
         std::cout << key << " = " << value << '\n';
-
     }
     std::cout << "------------\n";
 
@@ -34,12 +34,12 @@ int main()
         auto& value = size.second;
 
         std::cout << key << " = " << value << '\n';
-
     }
     std::cout << "------------\n";
 
     for (auto [value, key] : map)
         std::cout << key << " = " << value << '\n';
+#endif
 
     std::cin.get();
     return 0;
